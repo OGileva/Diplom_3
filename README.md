@@ -31,4 +31,8 @@ https://stellarburgers.nomoreparties.site/
 
 Подключен Allure-отчёт.
 
+Для запуска тестов в Яндекс.Браузер используется команда: mvn test -Dbrowser=yandex
+
+
+
 

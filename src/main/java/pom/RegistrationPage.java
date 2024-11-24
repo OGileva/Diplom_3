@@ -26,10 +26,6 @@ public class RegistrationPage {
         new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver1 -> driver.findElement(registrationText).isDisplayed());
     }
 
-    public void clickName() {
-        driver.findElement(nameField).click();
-    }
-
     @Step("Заполнить поле Имя")
     public void setName(String name) {
         driver.findElement(nameField).sendKeys(name);

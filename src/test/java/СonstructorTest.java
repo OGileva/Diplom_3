@@ -5,20 +5,21 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pom.MainPage;
 import settings.WebDriverFactory;
 
-public class ConstruktorTest {
+import static model.Constants.MAIN_PAGE;
+
+public class СonstructorTest {
     private WebDriver driver;
     private MainPage mainPage;
 
-    @Step("Подготовка данных")
+    @Step("Подготовка данных и браузера")
     @Before
     public void setUp() {
         String browser = System.getProperty("browser", "chrome");
         driver = WebDriverFactory.getDriver(browser);
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(MAIN_PAGE);
         driver.manage().window().maximize();
 
         mainPage = new MainPage(driver);
@@ -32,7 +33,7 @@ public class ConstruktorTest {
 
     @Test
     @DisplayName("Переход к разделу Булки")
-    public void shouldChoiceSectionBuns() {
+    public void bunSectionTest() {
         mainPage.clickSauceButton();
         mainPage.clickBunsButton();
         boolean isBunsChoiceSectionVisible = mainPage.isChoiceSectionVisible();
@@ -40,14 +41,14 @@ public class ConstruktorTest {
     }
     @Test
     @DisplayName("Переход к разделу Соусы")
-    public void shouldChoiceSectionSauce() {
+    public void sauceSectionTest() {
         mainPage.clickSauceButton();
         boolean isSauceChoiceSectionVisible = mainPage.isChoiceSectionVisible();
         Assert.assertTrue(isSauceChoiceSectionVisible);
     }
     @Test
     @DisplayName("Переход к разделу Начинки")
-    public void shouldChoiceSectionFilling() {
+    public void fillingSectionTest() {
         mainPage.clickFillingButton();
         boolean isFillingChoiceSectionVisible = mainPage.isChoiceSectionVisible();
         Assert.assertTrue(isFillingChoiceSectionVisible);

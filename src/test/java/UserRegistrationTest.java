@@ -5,12 +5,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pom.LoginPage;
 import pom.MainPage;
 import pom.RegistrationPage;
 import settings.WebDriverFactory;
 
+import static model.Constants.MAIN_PAGE;
 import static org.junit.Assert.assertTrue;
 
 @DisplayName("Регистрация нового пользователя")
@@ -32,7 +32,7 @@ public class UserRegistrationTest {
 
         String browser = System.getProperty("browser", "chrome");
         driver = WebDriverFactory.getDriver(browser);
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(MAIN_PAGE);
         driver.manage().window().maximize();
 
         mainPage = new MainPage(driver);
@@ -46,18 +46,25 @@ public class UserRegistrationTest {
         driver.quit();
     }
 
+    @Step("Переход в форму регистрации")
+    public void goToRegistrationForm() {
+        mainPage.clickLoginButton();
+        loginPage.clickRegistrationButton();
+    }
+
     @DisplayName("Успешная регистрация пользователя")
     @Test
     public void correctUserRegistrationTest() {
-        mainPage.waitLoadingMainPage();
-        mainPage.clickLoginButton();
-        loginPage.waitForLoadLoginPage();
-        loginPage.clickRegistrationButton();
+        goToRegistrationForm();
+
         registrationPage.setName(name);
         registrationPage.setEmail(email);
         registrationPage.setPassword(password);
-        boolean isEnterButtonVisible = loginPage.isLoginButtonVisible();
-        assertTrue("Кнопка 'Вход' не видима на странице", isEnterButtonVisible);
+
+        registrationPage.clickRegistrationButton();
+
+        boolean isEnterHeaderVisible = loginPage.isLoginButtonVisible();
+        assertTrue("Заголовок Вход отображается", isEnterHeaderVisible);
         System.out.println("Пользователь успешно зарегистрирован с email: " + email);
     }
 
@@ -65,14 +72,13 @@ public class UserRegistrationTest {
     @Test
     public void userRegistrationWithShortPasswordTest() {
         password = RandomStringUtils.randomAlphabetic(4);
-        mainPage.waitLoadingMainPage();
-        mainPage.clickLoginButton();
-        loginPage.waitForLoadLoginPage();
-        loginPage.clickRegistrationButton();
+        goToRegistrationForm();
+
         registrationPage.setName(name);
         registrationPage.setEmail(email);
         registrationPage.setPassword(password);
         registrationPage.clickRegistrationButton();
+
         boolean isErrorTextVisible = registrationPage.isIncorrectPasswordTextVisible();
         assertTrue("Текст ошибки виден на странице", isErrorTextVisible);
         System.out.println("Пользователя невозможно зарегистрировать: указан недопустимый пароль");

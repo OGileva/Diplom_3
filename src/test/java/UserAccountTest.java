@@ -6,10 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import pom.*;
 import settings.WebDriverFactory;
 
+import static model.Constants.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -23,10 +23,9 @@ public class UserAccountTest {
     private User user;
     private UserApi userApi;
     private String accessToken;
-    private final String LOGIN_URL_CONSTR = "https://stellarburgers.nomoreparties.site/";
     private final String LOGIN_URL = "https://stellarburgers.nomoreparties.site/account/profile";
 
-    @Step("Подготовка данных")
+    @Step("Подготовка данных и браузера")
     @Before
     public void setUp() {
         user = User.getUser();
@@ -35,7 +34,7 @@ public class UserAccountTest {
 
         String browser = System.getProperty("browser", "chrome");
         driver = WebDriverFactory.getDriver(browser);
-        driver.get("https://stellarburgers.nomoreparties.site/");
+        driver.get(MAIN_PAGE);
         driver.manage().window().maximize();
 
         mainPage = new MainPage(driver);
@@ -53,50 +52,45 @@ public class UserAccountTest {
         driver.quit();
     }
 
-    @Description("Тестирование перехода в личный кабинет по клику на Личный кабинет")
-    @Test
-    public void goToAccountFromMainPageTest() {
+    @Step("Авторизация пользователя")
+    public void userAuthorization() {
         mainPage.clickLoginButton();
         loginPage.setEmail(user.getEmail());
         loginPage.setPassword(user.getPassword());
         loginPage.clickLoginButton();
-        mainPage.clickUserCabinetButton();
+    }
+
+    @Description("Тестирование перехода в личный кабинет по клику на Личный кабинет")
+    @Test
+    public void goToAccountFromMainPageTest() {
+        userAuthorization();
+        mainPage.clickPersonalAccountButton();
         assertEquals("URL после входа в аккаунт и повторного клика по кнопке «Личный кабинет» должен быть переход на страницу профиля", LOGIN_URL, driver.getCurrentUrl());
     }
 
     @Description("Переход из личного кабинета  по клику на Конструктор")
     @Test
     public void constructorClickTest() {
-        mainPage.clickLoginButton();
-        loginPage.setEmail(user.getEmail());
-        loginPage.setPassword(user.getPassword());
-        loginPage.clickLoginButton();
-        mainPage.clickUserCabinetButton();
+        userAuthorization();
+        mainPage.clickPersonalAccountButton();
         profilePage.clickConstructorButton();
-        assertEquals("URL после клика по кнопке Конструктор из личного кабинета должен быть главной страницей", LOGIN_URL_CONSTR, driver.getCurrentUrl());
+        assertEquals("URL после клика по кнопке Конструктор из личного кабинета должен быть главной страницей", MAIN_PAGE, driver.getCurrentUrl());
     }
 
     @Description("Переход из личного кабинета на логотип Stellar Burgers")
     @Test
     public void logoClickTest() {
-        mainPage.clickLoginButton();
-        loginPage.setEmail(user.getEmail());
-        loginPage.setPassword(user.getPassword());
-        loginPage.clickLoginButton();
-        mainPage.clickUserCabinetButton();
+        userAuthorization();
+        mainPage.clickPersonalAccountButton();
         profilePage.clickLogoButton();
-        assertEquals("URL после клика по логотипу Stellar Burgers должен быть главной страницей", LOGIN_URL_CONSTR, driver.getCurrentUrl());
+        assertEquals("URL после клика по логотипу Stellar Burgers должен быть главной страницей", MAIN_PAGE, driver.getCurrentUrl());
     }
 
     @Description("Выход по кнопке «Выйти» в личном кабинете")
     @Test
     public void logoutTest() {
-        mainPage.clickLoginButton();
-        loginPage.setEmail(user.getEmail());
-        loginPage.setPassword(user.getPassword());
-        loginPage.clickLoginButton();
-        mainPage.clickUserCabinetButton();
-        profilePage.waitLoadingProfilePage();
+        userAuthorization();
+        mainPage.clickPersonalAccountButton();
         profilePage.clickLogoutButton();
         loginPage.waitForLoadLoginPage();
         boolean isLoginHeader = loginPage.isEnterHeaderVisible();

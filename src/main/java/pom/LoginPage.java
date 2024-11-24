@@ -37,20 +37,12 @@ public class LoginPage {
         driver.findElement(emailField).sendKeys(email);
     }
 
-    public void clickPassword() {
-        driver.findElement(passwordField).click();
-    }
-
     @Step("Заполнить поле Пароль")
     public void setPassword(String password) {
         driver.findElement(passwordField).sendKeys(password);
     }
 
-    public void enterLoginForm(String email, String password) {
-        setEmail(email);
-        setPassword(password);
-    }
-
+    @Step("Нажать на кнопку Вход")
     public void clickLoginButton() {
         driver.findElement(loginButton).click();
     }
@@ -60,14 +52,17 @@ public class LoginPage {
         return driver.findElement(loginButton).isDisplayed();
     }
 
+    @Step("Нажать на кнопку Зарегистрироваться")
     public void clickRegistrationButton() {
         driver.findElement(registerButton).click();
     }
 
+    @Step("Нажать на кнопку восстановления пароля")
     public void clickRecoverButton() {
         driver.findElement(recoverButton).click();
     }
 
+    @Step("Проверка видимости заголовка Вход")
     public boolean isEnterHeaderVisible() {
         return driver.findElement(enterHeader).isDisplayed();
     }
