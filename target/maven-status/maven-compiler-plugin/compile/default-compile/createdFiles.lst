@@ -1,0 +1,10 @@
+settings/WebDriverFactory.class
+model/Constants.class
+pom/RecoverPasswordPage.class
+pom/LoginPage.class
+model/UserApi.class
+pom/ProfilePage.class
+model/User.class
+model/Specification.class
+pom/MainPage.class
+pom/RegistrationPage.class
