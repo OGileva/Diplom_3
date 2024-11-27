@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: UserAccountTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 39.271 s <<< FAILURE! - in UserAccountTest
+goToAccountFromMainPageTest(UserAccountTest)  Time elapsed: 7.45 s  <<< FAILURE!
+org.junit.ComparisonFailure: URL после входа в аккаунт и повторного клика по кнопке «Личный кабинет» должен быть переход на страницу профиля expected:<...parties.site/account[/profile]> but was:<...parties.site/account[]>
+	at UserAccountTest.goToAccountFromMainPageTest(UserAccountTest.java:68)
+
